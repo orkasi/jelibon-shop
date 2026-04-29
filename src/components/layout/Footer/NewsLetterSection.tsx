@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import InputGroup from "@/components/ui/input-group";
 import { useLanguage } from "@/lib/language";
+import { publicPath } from "@/lib/paths";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -44,7 +45,7 @@ const NewsLetterSection = () => {
               <InputGroup.Text>
                 <Image
                   priority
-                  src="/icons/envelope.svg"
+                  src={publicPath("/icons/envelope.svg")}
                   height={20}
                   width={20}
                   alt="email"
@@ -82,7 +83,7 @@ const NewsLetterSection = () => {
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#ff3d8b]/10 text-[#ff3d8b]">
             <Image
               priority
-              src="/icons/envelope.svg"
+              src={publicPath("/icons/envelope.svg")}
               height={28}
               width={28}
               alt="email confirmation"

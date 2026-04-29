@@ -3,6 +3,7 @@
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/lib/language";
+import { publicPath } from "@/lib/paths";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import Image from "next/image";
@@ -97,11 +98,17 @@ const Header = () => {
           whileInView={{ y: "0", opacity: 1, rotate: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 2.3, duration: 0.8 }}
-          className="relative md:px-4 min-h-[448px] md:min-h-[428px] bg-cover bg-top xl:bg-[center_top_-1.6rem] bg-no-repeat bg-[url('/images/header-res-homepage.png')] md:bg-[url('/images/header-homepage.png')]"
+          className="homepage-hero-visual relative md:px-4 min-h-[448px] md:min-h-[428px] bg-cover bg-top xl:bg-[center_top_-1.6rem] bg-no-repeat"
+          style={
+            {
+              "--hero-mobile-image": `url('${publicPath("/images/header-res-homepage.png")}')`,
+              "--hero-desktop-image": `url('${publicPath("/images/header-homepage.png")}')`,
+            } as React.CSSProperties
+          }
         >
           <Image
             priority
-            src="/icons/big-star.svg"
+            src={publicPath("/icons/big-star.svg")}
             height={104}
             width={104}
             alt="big star"
@@ -109,7 +116,7 @@ const Header = () => {
           />
           <Image
             priority
-            src="/icons/small-star.svg"
+            src={publicPath("/icons/small-star.svg")}
             height={56}
             width={56}
             alt="small star"

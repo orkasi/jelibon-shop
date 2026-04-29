@@ -12,6 +12,7 @@ import Image from "next/image";
 import NewsLetterSection from "./NewsLetterSection";
 import LayoutSpacing from "./LayoutSpacing";
 import { useLanguage } from "@/lib/language";
+import { publicPath } from "@/lib/paths";
 
 const socialsData: SocialNetworks[] = [
   {
@@ -34,23 +35,23 @@ const socialsData: SocialNetworks[] = [
 const paymentBadgesData: PaymentBadge[] = [
   {
     id: 1,
-    srcUrl: "/icons/Visa.svg",
+    srcUrl: publicPath("/icons/Visa.svg"),
   },
   {
     id: 2,
-    srcUrl: "/icons/mastercard.svg",
+    srcUrl: publicPath("/icons/mastercard.svg"),
   },
   {
     id: 3,
-    srcUrl: "/icons/paypal.svg",
+    srcUrl: publicPath("/icons/paypal.svg"),
   },
   {
     id: 4,
-    srcUrl: "/icons/applePay.svg",
+    srcUrl: publicPath("/icons/applePay.svg"),
   },
   {
     id: 5,
-    srcUrl: "/icons/googlePay.svg",
+    srcUrl: publicPath("/icons/googlePay.svg"),
   },
 ];
 

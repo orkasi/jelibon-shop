@@ -19,6 +19,7 @@ import {
   PaginationLink,
 } from "@/components/ui/pagination";
 import { useLanguage } from "@/lib/language";
+import { publicPath } from "@/lib/paths";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Product } from "@/types/product.types";
 import { getSalePrice, products } from "@/data/products";
@@ -213,7 +214,7 @@ export default function ShopPage() {
                     <InputGroup.Text>
                       <Image
                         priority
-                        src="/icons/search.svg"
+                        src={publicPath("/icons/search.svg")}
                         height={20}
                         width={20}
                         alt="search"

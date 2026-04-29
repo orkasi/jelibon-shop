@@ -20,6 +20,16 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .homepage-hero-visual {
+    background-image: var(--hero-mobile-image);
+  }
+
+  @media (min-width: 768px) {
+    .homepage-hero-visual {
+      background-image: var(--hero-desktop-image);
+    }
+  }
 }
 
 @layer base {

@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   title: "Jelibon",
   description: "E-commerce storefront demo",
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/icon.svg`,
+    shortcut: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/icon.svg`,
+    apple: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/icon.svg`,
   },
 };
 

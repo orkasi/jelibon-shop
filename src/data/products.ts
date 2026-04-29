@@ -1,5 +1,6 @@
 import { Product } from "@/types/product.types";
 import { Review } from "@/types/review.types";
+import { publicPath } from "@/lib/paths";
 
 export const brands = [
   "Jelibon Studio",
@@ -18,27 +19,27 @@ export const brands = [
 
 const categoryImages = {
   "t-shirts": [
-    { color: "black", gallery: ["/images/pic1.png"] },
-    { color: "orange", gallery: ["/images/pic4.png"] },
-    { color: "red", gallery: ["/images/pic6.png"] },
-    { color: "green", gallery: ["/images/pic9.png", "/images/pic10.png", "/images/pic11.png"] },
-    { color: "purple", gallery: ["/images/pic13.png"] },
-    { color: "white", gallery: ["/images/pic15.png"] },
+    { color: "black", gallery: [publicPath("/images/pic1.png")] },
+    { color: "orange", gallery: [publicPath("/images/pic4.png")] },
+    { color: "red", gallery: [publicPath("/images/pic6.png")] },
+    { color: "green", gallery: [publicPath("/images/pic9.png"), publicPath("/images/pic10.png"), publicPath("/images/pic11.png")] },
+    { color: "purple", gallery: [publicPath("/images/pic13.png")] },
+    { color: "white", gallery: [publicPath("/images/pic15.png")] },
   ],
   shirts: [
-    { color: "red", gallery: ["/images/pic3.png"] },
-    { color: "green", gallery: ["/images/pic5.png"] },
+    { color: "red", gallery: [publicPath("/images/pic3.png")] },
+    { color: "green", gallery: [publicPath("/images/pic5.png")] },
   ],
   polos: [
-    { color: "blue", gallery: ["/images/pic12.png"] },
-    { color: "pink", gallery: ["/images/pic14.png"] },
+    { color: "blue", gallery: [publicPath("/images/pic12.png")] },
+    { color: "pink", gallery: [publicPath("/images/pic14.png")] },
   ],
   jeans: [
-    { color: "blue", gallery: ["/images/pic2.png"] },
-    { color: "black", gallery: ["/images/pic8.png"] },
+    { color: "blue", gallery: [publicPath("/images/pic2.png")] },
+    { color: "black", gallery: [publicPath("/images/pic8.png")] },
   ],
   shorts: [
-    { color: "blue", gallery: ["/images/pic7.png"] },
+    { color: "blue", gallery: [publicPath("/images/pic7.png")] },
   ],
 } as const;
 

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/language";
+import { publicPath } from "@/lib/paths";
 import Image from "next/image";
 import React from "react";
 
@@ -21,7 +22,7 @@ const TopBanner = () => {
         >
           <Image
             priority
-            src="/icons/times.svg"
+            src={publicPath("/icons/times.svg")}
             height={13}
             width={13}
             alt="close banner"

@@ -6,6 +6,7 @@ import React from "react";
 import * as motion from "framer-motion/client";
 import DressStyleCard from "./DressStyleCard";
 import { useLanguage } from "@/lib/language";
+import { publicPath } from "@/lib/paths";
 
 const DressStyle = () => {
   const { t } = useLanguage();
@@ -35,12 +36,14 @@ const DressStyle = () => {
           <DressStyleCard
             title={t("casual")}
             url="/shop?style=casual"
-            className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/dress-style-1.png')]"
+            imageUrl={publicPath("/images/dress-style-1.png")}
+            className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px]"
           />
           <DressStyleCard
             title={t("formal")}
             url="/shop?style=formal"
-            className="md:max-w-[684px] h-[190px] bg-[url('/images/dress-style-2.png')]"
+            imageUrl={publicPath("/images/dress-style-2.png")}
+            className="md:max-w-[684px] h-[190px]"
           />
         </motion.div>
         <motion.div
@@ -53,12 +56,14 @@ const DressStyle = () => {
           <DressStyleCard
             title={t("party")}
             url="/shop?style=party"
-            className="md:max-w-[684px] h-[190px] bg-[url('/images/dress-style-3.png')]"
+            imageUrl={publicPath("/images/dress-style-3.png")}
+            className="md:max-w-[684px] h-[190px]"
           />
           <DressStyleCard
             title={t("gym")}
             url="/shop?style=gym"
-            className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/dress-style-4.png')]"
+            imageUrl={publicPath("/images/dress-style-4.png")}
+            className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px]"
           />
         </motion.div>
       </section>

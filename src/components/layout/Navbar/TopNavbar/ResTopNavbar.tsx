@@ -12,6 +12,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import { NavMenu } from "../navbar.types";
+import { publicPath } from "@/lib/paths";
 import {
   Accordion,
   AccordionContent,
@@ -25,7 +26,7 @@ const ResTopNavbar = ({ data }: { data: NavMenu }) => {
       <SheetTrigger asChild className="cursor-pointer">
         <Image
           priority
-          src="/icons/menu.svg"
+          src={publicPath("/icons/menu.svg")}
           height={22}
           width={22}
           alt="menu"

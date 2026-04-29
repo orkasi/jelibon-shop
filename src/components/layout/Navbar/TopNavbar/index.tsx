@@ -17,6 +17,7 @@ import ResTopNavbar from "./ResTopNavbar";
 import CartBtn from "./CartBtn";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import { useLanguage } from "@/lib/language";
+import { publicPath } from "@/lib/paths";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -112,7 +113,7 @@ const TopNavbar = () => {
           <InputGroup.Text>
             <Image
               priority
-              src="/icons/search.svg"
+              src={publicPath("/icons/search.svg")}
               height={20}
               width={20}
               alt="search"
@@ -134,7 +135,7 @@ const TopNavbar = () => {
           <Link href="/shop" className="block md:hidden mr-[14px] p-1">
             <Image
               priority
-              src="/icons/search-black.svg"
+              src={publicPath("/icons/search-black.svg")}
               height={22}
               width={22}
               alt="search"
@@ -145,7 +146,7 @@ const TopNavbar = () => {
           <Link href="/account" className="p-1" aria-label={t("account")}>
             <Image
               priority
-              src="/icons/user.svg"
+              src={publicPath("/icons/user.svg")}
               height={22}
               width={22}
               alt="user"
