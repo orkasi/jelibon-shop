@@ -36,13 +36,13 @@ const DressStyle = () => {
           <DressStyleCard
             title={t("casual")}
             url="/shop?style=casual"
-            imageUrl={publicPath("/images/dress-style-1.png")}
+            imageUrl={publicPath("/images/optimized/dress-style-1.webp")}
             className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px]"
           />
           <DressStyleCard
             title={t("formal")}
             url="/shop?style=formal"
-            imageUrl={publicPath("/images/dress-style-2.png")}
+            imageUrl={publicPath("/images/optimized/dress-style-2.webp")}
             className="md:max-w-[684px] h-[190px]"
           />
         </motion.div>
@@ -56,13 +56,13 @@ const DressStyle = () => {
           <DressStyleCard
             title={t("party")}
             url="/shop?style=party"
-            imageUrl={publicPath("/images/dress-style-3.png")}
+            imageUrl={publicPath("/images/optimized/dress-style-3.webp")}
             className="md:max-w-[684px] h-[190px]"
           />
           <DressStyleCard
             title={t("gym")}
             url="/shop?style=gym"
-            imageUrl={publicPath("/images/dress-style-4.png")}
+            imageUrl={publicPath("/images/optimized/dress-style-4.webp")}
             className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px]"
           />
         </motion.div>

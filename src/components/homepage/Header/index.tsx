@@ -101,8 +101,8 @@ const Header = () => {
           className="homepage-hero-visual relative md:px-4 min-h-[448px] md:min-h-[428px] bg-cover bg-top xl:bg-[center_top_-1.6rem] bg-no-repeat"
           style={
             {
-              "--hero-mobile-image": `url('${publicPath("/images/header-res-homepage.png")}')`,
-              "--hero-desktop-image": `url('${publicPath("/images/header-homepage.png")}')`,
+              "--hero-mobile-image": `url('${publicPath("/images/optimized/header-res-homepage.webp")}')`,
+              "--hero-desktop-image": `url('${publicPath("/images/optimized/header-homepage.webp")}')`,
             } as React.CSSProperties
           }
         >

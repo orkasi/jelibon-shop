@@ -19,27 +19,27 @@ export const brands = [
 
 const categoryImages = {
   "t-shirts": [
-    { color: "black", gallery: [publicPath("/images/pic1.png")] },
-    { color: "orange", gallery: [publicPath("/images/pic4.png")] },
-    { color: "red", gallery: [publicPath("/images/pic6.png")] },
-    { color: "green", gallery: [publicPath("/images/pic9.png"), publicPath("/images/pic10.png"), publicPath("/images/pic11.png")] },
-    { color: "purple", gallery: [publicPath("/images/pic13.png")] },
-    { color: "white", gallery: [publicPath("/images/pic15.png")] },
+    { color: "black", gallery: [publicPath("/images/optimized/pic1.webp")] },
+    { color: "orange", gallery: [publicPath("/images/optimized/pic4.webp")] },
+    { color: "red", gallery: [publicPath("/images/optimized/pic6.webp")] },
+    { color: "green", gallery: [publicPath("/images/optimized/pic9.webp"), publicPath("/images/optimized/pic10.webp"), publicPath("/images/optimized/pic11.webp")] },
+    { color: "purple", gallery: [publicPath("/images/optimized/pic13.webp")] },
+    { color: "white", gallery: [publicPath("/images/optimized/pic15.webp")] },
   ],
   shirts: [
-    { color: "red", gallery: [publicPath("/images/pic3.png")] },
-    { color: "green", gallery: [publicPath("/images/pic5.png")] },
+    { color: "red", gallery: [publicPath("/images/optimized/pic3.webp")] },
+    { color: "green", gallery: [publicPath("/images/optimized/pic5.webp")] },
   ],
   polos: [
-    { color: "blue", gallery: [publicPath("/images/pic12.png")] },
-    { color: "pink", gallery: [publicPath("/images/pic14.png")] },
+    { color: "blue", gallery: [publicPath("/images/optimized/pic12.webp")] },
+    { color: "pink", gallery: [publicPath("/images/optimized/pic14.webp")] },
   ],
   jeans: [
-    { color: "blue", gallery: [publicPath("/images/pic2.png")] },
-    { color: "black", gallery: [publicPath("/images/pic8.png")] },
+    { color: "blue", gallery: [publicPath("/images/optimized/pic2.webp")] },
+    { color: "black", gallery: [publicPath("/images/optimized/pic8.webp")] },
   ],
   shorts: [
-    { color: "blue", gallery: [publicPath("/images/pic7.png")] },
+    { color: "blue", gallery: [publicPath("/images/optimized/pic7.webp")] },
   ],
 } as const;
 
