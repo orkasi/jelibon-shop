@@ -1,4 +1,4 @@
-import { mkdir, readdir, stat } from "node:fs/promises";
+import { mkdir, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,6 +20,7 @@ const outputPathFor = (file) =>
   path.join(outputDir, `${path.basename(file, ".png")}.webp`);
 
 if (isCheck) {
+  const { default: sharp } = await import("sharp");
   const stale = [];
 
   for (const file of sourceFiles) {
@@ -27,13 +28,13 @@ if (isCheck) {
     const outputPath = outputPathFor(file);
 
     try {
-      const [sourceStats, outputStats] = await Promise.all([
-        stat(sourcePath),
-        stat(outputPath),
+      const [expectedOutput, committedOutput] = await Promise.all([
+        sharp(sourcePath).webp({ quality, effort: 6 }).toBuffer(),
+        readFile(outputPath),
       ]);
 
-      if (outputStats.mtimeMs < sourceStats.mtimeMs) {
-        stale.push(`${path.relative(root, outputPath)} is older than ${path.relative(root, sourcePath)}`);
+      if (!expectedOutput.equals(committedOutput)) {
+        stale.push(`${path.relative(root, outputPath)} does not match ${path.relative(root, sourcePath)}`);
       }
     } catch {
       stale.push(`${path.relative(root, outputPath)} is missing`);
