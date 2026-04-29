@@ -1,10 +1,10 @@
-# Jelibon Shop Demo
+# Jelibon Shop
 
-Portfolio-ready streetwear ecommerce demo built with Next.js, React, Redux Toolkit, and Tailwind CSS.
+Portfolio-ready streetwear ecommerce storefront built with Next.js, React, Redux Toolkit, and Tailwind CSS.
 
 ## Features
 
-- 250 local demo products
+- 250 local products
 - Category, brand, color, size, style, price, search, sorting, and pagination
 - Product detail pages with image-changing color variants and stock-aware size selection
 - Cart quantity controls with separate rows for different variants
