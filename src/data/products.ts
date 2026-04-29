@@ -18,41 +18,41 @@ export const brands = [
 
 const categoryImages = {
   "t-shirts": [
-    { color: "black", gallery: ["/images/pic1.png", "/images/pic1.png", "/images/pic1.png"] },
-    { color: "orange", gallery: ["/images/pic4.png", "/images/pic15.png", "/images/pic4.png"] },
-    { color: "orange", gallery: ["/images/pic6.png", "/images/pic6.png", "/images/pic6.png"] },
+    { color: "black", gallery: ["/images/pic1.png"] },
+    { color: "orange", gallery: ["/images/pic4.png"] },
+    { color: "red", gallery: ["/images/pic6.png"] },
     { color: "green", gallery: ["/images/pic9.png", "/images/pic10.png", "/images/pic11.png"] },
-    { color: "white", gallery: ["/images/pic13.png", "/images/pic13.png", "/images/pic13.png"] },
-    { color: "white", gallery: ["/images/pic15.png", "/images/pic4.png", "/images/pic15.png"] },
+    { color: "purple", gallery: ["/images/pic13.png"] },
+    { color: "white", gallery: ["/images/pic15.png"] },
   ],
   shirts: [
-    { color: "red", gallery: ["/images/pic3.png", "/images/pic3.png", "/images/pic3.png"] },
-    { color: "green", gallery: ["/images/pic5.png", "/images/pic5.png", "/images/pic5.png"] },
+    { color: "red", gallery: ["/images/pic3.png"] },
+    { color: "green", gallery: ["/images/pic5.png"] },
   ],
   polos: [
-    { color: "blue", gallery: ["/images/pic12.png", "/images/pic12.png", "/images/pic12.png"] },
-    { color: "pink", gallery: ["/images/pic14.png", "/images/pic14.png", "/images/pic14.png"] },
+    { color: "blue", gallery: ["/images/pic12.png"] },
+    { color: "pink", gallery: ["/images/pic14.png"] },
   ],
   jeans: [
-    { color: "blue", gallery: ["/images/pic2.png", "/images/pic2.png", "/images/pic2.png"] },
-    { color: "black", gallery: ["/images/pic8.png", "/images/pic8.png", "/images/pic8.png"] },
+    { color: "blue", gallery: ["/images/pic2.png"] },
+    { color: "black", gallery: ["/images/pic8.png"] },
   ],
   shorts: [
-    { color: "blue", gallery: ["/images/pic7.png", "/images/pic7.png", "/images/pic7.png"] },
+    { color: "blue", gallery: ["/images/pic7.png"] },
   ],
 } as const;
 
 export const colorOptions = [
-  { value: "black", label: "Black", labelTr: "Siyah", code: "bg-black" },
-  { value: "white", label: "White", labelTr: "Beyaz", code: "bg-white" },
-  { value: "pink", label: "Pink", labelTr: "Pembe", code: "bg-pink-600" },
-  { value: "blue", label: "Blue", labelTr: "Mavi", code: "bg-blue-600" },
-  { value: "green", label: "Green", labelTr: "Yeşil", code: "bg-green-600" },
-  { value: "purple", label: "Purple", labelTr: "Mor", code: "bg-purple-600" },
-  { value: "orange", label: "Orange", labelTr: "Turuncu", code: "bg-orange-600" },
-  { value: "brown", label: "Brown", labelTr: "Kahverengi", code: "bg-[#4F4631]" },
-  { value: "cyan", label: "Cyan", labelTr: "Cam Göbeği", code: "bg-cyan-400" },
-  { value: "red", label: "Red", labelTr: "Kırmızı", code: "bg-red-600" },
+  { value: "black", label: "Black", labelTr: "Siyah", code: "#000000" },
+  { value: "white", label: "White", labelTr: "Beyaz", code: "#FFFFFF" },
+  { value: "pink", label: "Pink", labelTr: "Pembe", code: "#DB2777" },
+  { value: "blue", label: "Blue", labelTr: "Mavi", code: "#2563EB" },
+  { value: "green", label: "Green", labelTr: "Yeşil", code: "#16A34A" },
+  { value: "purple", label: "Purple", labelTr: "Mor", code: "#9333EA" },
+  { value: "orange", label: "Orange", labelTr: "Turuncu", code: "#EA580C" },
+  { value: "brown", label: "Brown", labelTr: "Kahverengi", code: "#4F4631" },
+  { value: "cyan", label: "Cyan", labelTr: "Cam Göbeği", code: "#22D3EE" },
+  { value: "red", label: "Red", labelTr: "Kırmızı", code: "#DC2626" },
 ];
 
 export const sizeOptions = [
@@ -140,21 +140,6 @@ type CategoryImageOption = {
 };
 type CategoryImageSet = readonly CategoryImageOption[];
 
-const selectImageOptions = (
-  imageSet: CategoryImageSet,
-  startIndex: number,
-  count: number
-) => {
-  const selected: CategoryImageOption[] = [];
-
-  for (let offset = 0; selected.length < count && offset < imageSet.length * 2; offset++) {
-    const option = pick(Array.from(imageSet), startIndex + offset);
-    if (!selected.some((item) => item.color === option.color)) selected.push(option);
-  }
-
-  return selected.length > 0 ? selected : [imageSet[0]];
-};
-
 export const getSalePrice = (product: Product) => {
   if (product.discount.percentage > 0) {
     return Math.round(product.price - (product.price * product.discount.percentage) / 100);
@@ -165,7 +150,7 @@ export const getSalePrice = (product: Product) => {
   return product.price;
 };
 
-export const products: Product[] = Array.from({ length: 250 }, (_, index) => {
+const generatedProducts: Product[] = Array.from({ length: 250 }, (_, index) => {
   const family = pick(productFamilies, index);
   const [baseName, baseNameTr] = pick(family.names, Math.floor(index / productFamilies.length));
   const brand = pick(brands, index);
@@ -177,17 +162,12 @@ export const products: Product[] = Array.from({ length: 250 }, (_, index) => {
   const imageSet = categoryImages[
     family.category as keyof typeof categoryImages
   ] as CategoryImageSet;
-  const variantCount = Math.min(imageSet.length, 2 + (index % 3));
-  const imageOptions = selectImageOptions(
-    imageSet,
-    Math.floor(index / productFamilies.length),
-    variantCount
-  );
-  const variants = imageOptions.map((imageOption, variantIndex) => {
-    const color = colorOptions.find((item) => item.value === imageOption.color) ?? colorOptions[0];
-    const gallery = Array.from(imageOption.gallery);
-    const image = gallery[0];
-    return {
+  const imageOption = pick(Array.from(imageSet), Math.floor(index / productFamilies.length));
+  const color = colorOptions.find((item) => item.value === imageOption.color) ?? colorOptions[0];
+  const gallery = Array.from(imageOption.gallery);
+  const image = gallery[0];
+  const variants = [
+    {
       color: color.value,
       colorTr: color.labelTr,
       colorCode: color.code,
@@ -195,10 +175,10 @@ export const products: Product[] = Array.from({ length: 250 }, (_, index) => {
       gallery,
       sizes: sizes.map((size, sizeIndex) => ({
         size,
-        stock: (index + variantIndex + sizeIndex) % 11 === 0 ? 0 : 3 + ((index + sizeIndex) % 9),
+        stock: (index + sizeIndex) % 11 === 0 ? 0 : 3 + ((index + sizeIndex) % 9),
       })),
-    };
-  });
+    },
+  ];
 
   return {
     id: index + 1,
@@ -210,8 +190,8 @@ export const products: Product[] = Array.from({ length: 250 }, (_, index) => {
       "A versatile piece designed for everyday outfits, built with soft fabric, easy styling, and a clean streetwear attitude.",
     descriptionTr:
       "Günlük kombinlere kolayca uyum sağlayan, yumuşak kumaşı ve sade streetwear duruşuyla rahat bir parça.",
-    srcUrl: variants[0].image,
-    gallery: variants[0].gallery,
+    srcUrl: image,
+    gallery,
     price,
     discount: {
       amount: 0,
@@ -220,15 +200,25 @@ export const products: Product[] = Array.from({ length: 250 }, (_, index) => {
     rating: Number((3.6 + ((index * 7) % 14) / 10).toFixed(1)),
     category: family.category,
     style: pick(styleCycle, index + productFamilies.indexOf(family)),
-    colors: variants.map((variant) => variant.color),
+    colors: [color.value],
     sizes,
     variants,
   };
 });
 
+const uniqueProductsByImage = new Map<string, Product>();
+
+generatedProducts.forEach((product) => {
+  if (!uniqueProductsByImage.has(product.srcUrl)) {
+    uniqueProductsByImage.set(product.srcUrl, product);
+  }
+});
+
+export const products: Product[] = Array.from(uniqueProductsByImage.values());
+
 export const newArrivalsData = products.slice(0, 12);
 export const topSellingData = [...products].sort((a, b) => b.rating - a.rating).slice(0, 12);
-export const relatedProductData = products.slice(24, 36);
+export const relatedProductData = products.slice(8);
 
 export const getProductById = (id: number) => products.find((product) => product.id === id);
 

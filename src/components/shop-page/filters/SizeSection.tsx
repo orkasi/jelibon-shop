@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/language";
+import { getCompactSizeLabel } from "@/lib/language-format";
 import { sizeOptions } from "@/data/products";
 
 type ControlledSizeSectionProps = {
@@ -18,20 +19,6 @@ type ControlledSizeSectionProps = {
 
 const ControlledSizeSection = ({ selected, onChange }: ControlledSizeSectionProps) => {
   const { language, t } = useLanguage();
-  const sizeLabel = (size: string) => {
-    if (language !== "tr") return size;
-    return {
-      "XX-Small": "XXS",
-      "X-Small": "XS",
-      Small: "S",
-      Medium: "M",
-      Large: "L",
-      "X-Large": "XL",
-      "XX-Large": "XXL",
-      "3X-Large": "3XL",
-      "4X-Large": "4XL",
-    }[size] ?? size;
-  };
 
   return (
     <Accordion type="single" collapsible defaultValue="filter-size">
@@ -61,7 +48,7 @@ const ControlledSizeSection = ({ selected, onChange }: ControlledSizeSectionProp
                 ])}
                 onClick={() => onChange(size)}
               >
-                {sizeLabel(size)}
+                {getCompactSizeLabel(language, size)}
               </button>
             ))}
           </div>

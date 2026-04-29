@@ -1,12 +1,22 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  LANGUAGE_COOKIE_KEY,
+  LANGUAGE_STORAGE_KEY,
+  Language,
+} from "@/lib/language-constants";
+import {
+  getLocalizedPathname,
+  sanitizeLanguageForPath,
+} from "@/lib/language-routing";
 
-export type Language = "en" | "tr";
+export type { Language } from "@/lib/language-constants";
 
 export const copy = {
   en: {
-    signUpOffer: "Sign up and get 20% off to your first order.",
+    signUpOffer: "Get 20% off to your first order!",
     signUpNow: "Sign Up Now",
     shop: "Shop",
     mensClothes: "Men's clothes",
@@ -63,7 +73,7 @@ export const copy = {
     tshirts: "T-shirts",
     shorts: "Shorts",
     shirts: "Shirts",
-    hoodie: "Hoodie",
+    hoodie: "Kapüşonlu",
     polos: "Polos",
     jeans: "Jeans",
     productDescription:
@@ -111,6 +121,21 @@ export const copy = {
     placeOrder: "Place Order",
     orderConfirmed: "Order confirmed.",
     orderConfirmedBody: "Your demo order has been received.",
+    checkoutEyebrow: "Checkout",
+    checkoutTitle: "Complete Your Order",
+    checkoutIntro:
+      "Review your order, add your contact details, and place your demo order from one dedicated checkout page.",
+    placingOrder: "Placing Order...",
+    thankYouOrder: "Thanks for your order",
+    checkoutSuccessIntro:
+      "Your demo order was placed successfully. We have shown a confirmation summary below so the flow feels closer to a real storefront experience.",
+    orderDetails: "Order Details",
+    orderNumber: "Order Number:",
+    whatsNext: "What happens next",
+    checkoutSuccessNext:
+      "In a real store, this is where customers would receive an email confirmation and follow-up delivery updates. For now, you can continue browsing or contact support.",
+    continueShopping: "Continue Shopping",
+    customerSupportCta: "Customer Support",
     requiredField: "Please fill in this field.",
     invalidEmail: "Please enter a valid email.",
     emptyCart: "Your shopping cart is empty.",
@@ -120,10 +145,15 @@ export const copy = {
     emailPlaceholder: "Enter your email address",
     subscribeNewsletter: "Subscribe to Newsletter",
     newsletterSuccess: "You're on the list.",
+    newsletterDemoTitle: "Subscription confirmed",
+    newsletterDemoBody:
+      "This is a demo popup only. Your email was validated, but no information was saved.",
+    close: "Close",
     footerAbout:
       "We have clothes that suits your style and which you’re proud to wear. From women to men.",
     footerShop: "shop",
     support: "support",
+    account: "Account",
     customerSupport: "customer support",
     deliveryDetails: "delivery details",
     terms: "terms & conditions",
@@ -138,7 +168,7 @@ export const copy = {
     xlarge: "X-Large",
   },
   tr: {
-    signUpOffer: "İlk siparişine özel %20 indirim için kaydol.",
+    signUpOffer: "İlk siparişine özel %20 indirim!",
     signUpNow: "Hemen Kaydol",
     shop: "Mağaza",
     mensClothes: "Erkek giyim",
@@ -243,6 +273,21 @@ export const copy = {
     placeOrder: "Siparişi Tamamla",
     orderConfirmed: "Sipariş onaylandı.",
     orderConfirmedBody: "Demo siparişin alındı.",
+    checkoutEyebrow: "Ödeme",
+    checkoutTitle: "Siparişini Tamamla",
+    checkoutIntro:
+      "Siparişini gözden geçir, iletişim bilgilerini ekle ve demo siparişini tek bir ödeme sayfasından tamamla.",
+    placingOrder: "Sipariş Veriliyor...",
+    thankYouOrder: "Siparişin için teşekkürler",
+    checkoutSuccessIntro:
+      "Demo siparişiniz başarıyla oluşturuldu. Akışın gerçek bir mağaza deneyimine daha yakın hissettirmesi için aşağıda bir onay özeti gösteriyoruz.",
+    orderDetails: "Sipariş Detayları",
+    orderNumber: "Sipariş Numarası:",
+    whatsNext: "Sırada ne var",
+    checkoutSuccessNext:
+      "Gerçek bir mağazada müşteriler bu aşamada e-posta ile sipariş onayı ve teslimat güncellemeleri alırdı. Şimdilik alışverişe devam edebilir veya destek ekibiyle iletişime geçebilirsiniz.",
+    continueShopping: "Alışverişe Devam Et",
+    customerSupportCta: "Müşteri Desteği",
     requiredField: "Lütfen bu alanı doldur.",
     invalidEmail: "Geçerli bir e-posta gir.",
     emptyCart: "Sepetin boş.",
@@ -252,10 +297,15 @@ export const copy = {
     emailPlaceholder: "E-posta adresini gir",
     subscribeNewsletter: "Bültene Abone Ol",
     newsletterSuccess: "Listeye eklendin.",
+    newsletterDemoTitle: "Abonelik onaylandı",
+    newsletterDemoBody:
+      "Bu yalnızca bir demo penceresi. E-posta doğrulandı, ancak hiçbir bilgi kaydedilmedi.",
+    close: "Kapat",
     footerAbout:
       "Tarzına uyan, rahatça giyebileceğin ve severek kombinleyebileceğin parçalar sunuyoruz.",
     footerShop: "mağaza",
     support: "destek",
+    account: "Hesap",
     customerSupport: "müşteri desteği",
     deliveryDetails: "teslimat bilgileri",
     terms: "kullanım koşulları",
@@ -264,10 +314,10 @@ export const copy = {
     brown: "Kahverengi",
     green: "Yeşil",
     blue: "Mavi",
-    small: "Small",
-    medium: "Medium",
-    large: "Large",
-    xlarge: "X-Large",
+    small: "Küçük",
+    medium: "Orta",
+    large: "Büyük",
+    xlarge: "Ekstra Büyük",
   },
 } as const;
 
@@ -279,22 +329,43 @@ const LanguageContext = createContext<{
   t: (key: CopyKey) => string;
 } | null>(null);
 
-export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>("en");
+export const LanguageProvider = ({
+  children,
+  initialLanguage = "en",
+}: {
+  children: React.ReactNode;
+  initialLanguage?: Language;
+}) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("jelibon-language");
-    if (saved === "en" || saved === "tr") setLanguageState(saved);
-  }, []);
+    const saved = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (saved === "en" || saved === "tr") {
+      const nextLanguage = sanitizeLanguageForPath(pathname, saved);
+      if (nextLanguage !== language) {
+        setLanguageState(nextLanguage);
+      }
+    }
+  }, [language, pathname]);
 
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
 
-  const setLanguage = (nextLanguage: Language) => {
-    setLanguageState(nextLanguage);
-    window.localStorage.setItem("jelibon-language", nextLanguage);
-  };
+  const setLanguage = useCallback((nextLanguage: Language) => {
+    const sanitizedLanguage = sanitizeLanguageForPath(pathname, nextLanguage);
+    const localizedPath = getLocalizedPathname(pathname, sanitizedLanguage);
+
+    setLanguageState(sanitizedLanguage);
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, sanitizedLanguage);
+    document.cookie = `${LANGUAGE_COOKIE_KEY}=${sanitizedLanguage}; path=/; max-age=31536000; samesite=lax`;
+
+    if (localizedPath !== pathname) {
+      router.replace(localizedPath);
+    }
+  }, [pathname, router]);
 
   const value = useMemo(
     () => ({
@@ -302,7 +373,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
       setLanguage,
       t: (key: CopyKey) => copy[language][key],
     }),
-    [language]
+    [language, setLanguage]
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

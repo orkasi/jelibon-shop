@@ -26,10 +26,10 @@ const ResTopNavbar = ({ data }: { data: NavMenu }) => {
         <Image
           priority
           src="/icons/menu.svg"
-          height={100}
-          width={100}
+          height={22}
+          width={22}
           alt="menu"
-          className="max-w-[22px] max-h-[22px]"
+          className="h-[22px] w-[22px]"
         />
       </SheetTrigger>
       <SheetContent side="left" className="overflow-y-auto">
@@ -60,7 +60,7 @@ const ResTopNavbar = ({ data }: { data: NavMenu }) => {
                         {item.label}
                       </AccordionTrigger>
                       <AccordionContent className="p-4 pb-0 border-l flex flex-col">
-                        {item.children.map((itemChild, idx) => (
+                        {item.children.map((itemChild) => (
                           <SheetClose
                             key={itemChild.id}
                             asChild

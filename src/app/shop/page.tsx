@@ -59,28 +59,55 @@ const productSearchText = (product: Product) =>
     .join(" ")
     .toLocaleLowerCase("tr-TR");
 
+const parseNumber = (value: string | null, fallback: number) => {
+  if (!value) return fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
 export default function ShopPage() {
   const { t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const initialSearch = searchParams.get("search") ?? "";
-  const [filters, setFilters] = useState<ShopFiltersState>({
-    ...initialFilters,
-    category: searchParams.get("category") ?? "all",
-    brand: searchParams.get("brand") ?? "all",
-    color: searchParams.get("color") ?? "all",
-    size: searchParams.get("size") ?? "all",
-    style: searchParams.get("style") ?? "all",
-  });
-  const [sort, setSort] = useState(searchParams.get("sort") ?? "most-popular");
-  const [saleOnly, setSaleOnly] = useState(searchParams.get("sale") === "1");
-  const [query, setQuery] = useState(initialSearch);
-  const [submittedQuery, setSubmittedQuery] = useState(initialSearch);
-  const [currentPage, setCurrentPage] = useState(1);
+  const filters = useMemo<ShopFiltersState>(
+    () => ({
+      ...initialFilters,
+      category: searchParams.get("category") ?? "all",
+      brand: searchParams.get("brand") ?? "all",
+      color: searchParams.get("color") ?? "all",
+      size: searchParams.get("size") ?? "all",
+      style: searchParams.get("style") ?? "all",
+      price: [
+        parseNumber(searchParams.get("minPrice"), initialFilters.price[0]),
+        parseNumber(searchParams.get("maxPrice"), initialFilters.price[1]),
+      ],
+    }),
+    [searchParams]
+  );
+  const sort = searchParams.get("sort") ?? "most-popular";
+  const saleOnly = searchParams.get("sale") === "1";
+  const submittedQuery = searchParams.get("search") ?? "";
+  const currentPage = Math.max(1, parseNumber(searchParams.get("page"), 1));
+  const [query, setQuery] = useState(submittedQuery);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [filters, sort, saleOnly, submittedQuery]);
+    setQuery(submittedQuery);
+  }, [submittedQuery]);
+
+  const updateParams = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null || value === "") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    });
+
+    const nextQuery = params.toString();
+    router.replace(nextQuery ? `/shop?${nextQuery}` : "/shop", { scroll: false });
+  };
 
   const filteredProducts = useMemo(() => {
     const normalizedQuery = submittedQuery.trim().toLocaleLowerCase("tr-TR");
@@ -128,22 +155,34 @@ export default function ShopPage() {
   const updateFilter = <K extends keyof ShopFiltersState>(
     key: K,
     value: ShopFiltersState[K]
-  ) => setFilters((current) => ({ ...current, [key]: value }));
+  ) => {
+    if (key === "price") {
+      const [minPrice, maxPrice] = value as ShopFiltersState["price"];
+      updateParams({
+        minPrice: minPrice === initialFilters.price[0] ? null : String(minPrice),
+        maxPrice: maxPrice === initialFilters.price[1] ? null : String(maxPrice),
+        page: null,
+      });
+      return;
+    }
+
+    updateParams({
+      [key]: value === initialFilters[key] ? null : String(value),
+      page: null,
+    });
+  };
 
   const resetFilters = () => {
-    setFilters(initialFilters);
     setQuery("");
-    setSubmittedQuery("");
-    setSaleOnly(false);
     router.replace("/shop", { scroll: false });
   };
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextQuery = query.trim();
-    setSubmittedQuery(nextQuery);
-    router.replace(nextQuery ? `/shop?search=${encodeURIComponent(nextQuery)}` : "/shop", {
-      scroll: false,
+    updateParams({
+      search: nextQuery || null,
+      page: null,
     });
   };
 
@@ -201,7 +240,10 @@ export default function ShopPage() {
                 </span>
                 <div className="flex items-center">
                   {t("sortBy")}{" "}
-                  <Select value={sort} onValueChange={setSort}>
+                  <Select
+                    value={sort}
+                    onValueChange={(value) => updateParams({ sort: value, page: null })}
+                  >
                     <SelectTrigger className="font-medium text-sm px-1.5 sm:text-base w-fit text-black bg-transparent shadow-none border-none">
                       <SelectValue />
                     </SelectTrigger>
@@ -233,7 +275,7 @@ export default function ShopPage() {
                   variant="outline"
                   className="rounded-lg border-black/10"
                   disabled={page === 1}
-                  onClick={() => setCurrentPage((current) => Math.max(1, current - 1))}
+                  onClick={() => updateParams({ page: page <= 2 ? null : String(page - 1) })}
                 >
                   {t("previous")}
                 </Button>
@@ -249,7 +291,7 @@ export default function ShopPage() {
                         isActive={pageNumber === page}
                         onClick={(event) => {
                           event.preventDefault();
-                          setCurrentPage(pageNumber);
+                          updateParams({ page: pageNumber === 1 ? null : String(pageNumber) });
                         }}
                       >
                         {pageNumber}
@@ -262,7 +304,7 @@ export default function ShopPage() {
                   variant="outline"
                   className="rounded-lg border-black/10"
                   disabled={page === totalPages}
-                  onClick={() => setCurrentPage((current) => Math.min(totalPages, current + 1))}
+                  onClick={() => updateParams({ page: String(page + 1) })}
                 >
                   {t("next")}
                 </Button>

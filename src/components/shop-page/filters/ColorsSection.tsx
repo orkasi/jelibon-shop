@@ -15,14 +15,14 @@ import { colorOptions } from "@/data/products";
 export type ColorFilter = {
   label: string;
   value: string;
-  className: string;
+  code: string;
 };
 
 export const colorFilters: ColorFilter[] = [
   ...colorOptions.map((color) => ({
     label: color.label,
     value: color.value,
-    className: color.code,
+    code: color.code,
   })),
 ];
 
@@ -45,8 +45,8 @@ const ControlledColorsSection = ({ selected, onChange }: ColorsSectionProps) => 
             <button
               type="button"
               className={cn([
-                "rounded-full w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center border border-black/20 text-[10px] font-medium",
-                selected === "all" && "ring-2 ring-black",
+                "rounded-full w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center border border-black/20 text-[10px] font-medium box-border",
+                selected === "all" && "border-2 border-black",
               ])}
               onClick={() => onChange("all")}
             >
@@ -63,13 +63,21 @@ const ControlledColorsSection = ({ selected, onChange }: ColorsSectionProps) => 
                     : color.label
                 }
                 className={cn([
-                  color.className,
                   "rounded-full w-9 sm:w-10 h-9 sm:h-10 flex items-center justify-center border border-black/20",
+                  color.value === "white" && "border-black/20",
                 ])}
+                style={{ backgroundColor: color.code }}
                 onClick={() => onChange(color.value)}
               >
                 {selected === color.value && (
-                  <IoMdCheckmark className="text-base text-white" />
+                  <IoMdCheckmark
+                    className={cn(
+                      "text-base",
+                      color.value === "white" || color.value === "cyan"
+                        ? "text-black"
+                        : "text-white"
+                    )}
+                  />
                 )}
               </button>
             ))}

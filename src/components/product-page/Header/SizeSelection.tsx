@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 import { useLanguage } from "@/lib/language";
+import { getCompactSizeLabel } from "@/lib/language-format";
 import { ProductVariantSize } from "@/types/product.types";
 
 const SizeSelection = ({
@@ -13,15 +14,6 @@ const SizeSelection = ({
   onSelect: (size: string) => void;
 }) => {
   const { language, t } = useLanguage();
-  const sizeLabel = (size: string) => {
-    if (language !== "tr") return size;
-    return {
-      Small: "S",
-      Medium: "M",
-      Large: "L",
-      "X-Large": "XL",
-    }[size] ?? size;
-  };
 
   return (
     <div className="flex flex-col">
@@ -41,7 +33,7 @@ const SizeSelection = ({
             ])}
             onClick={() => onSelect(size.size)}
           >
-            {sizeLabel(size.size)}
+            {getCompactSizeLabel(language, size.size)}
           </button>
         ))}
       </div>

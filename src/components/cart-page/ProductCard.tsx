@@ -14,6 +14,7 @@ import {
 } from "@/lib/features/carts/cartsSlice";
 import { useAppDispatch } from "@/lib/hooks/redux";
 import { CopyKey, useLanguage } from "@/lib/language";
+import { getTranslatedSizeLabel } from "@/lib/language-format";
 
 type ProductCardProps = {
   data: CartItem;
@@ -30,14 +31,14 @@ const ProductCard = ({ data }: ProductCardProps) => {
     }
 
     const keys: Record<string, CopyKey> = {
-      Small: "small",
-      Medium: "medium",
-      Large: "large",
-      "X-Large": "xlarge",
       Brown: "brown",
       Green: "green",
       Blue: "blue",
     };
+
+    if (["Small", "Medium", "Large", "X-Large"].includes(value)) {
+      return getTranslatedSizeLabel(language, value);
+    }
 
     return keys[value] ? t(keys[value]) : value;
   };
@@ -46,13 +47,13 @@ const ProductCard = ({ data }: ProductCardProps) => {
     <div className="flex items-start space-x-4">
       <Link
         href={`/shop/product/${data.id}/${data.name.split(" ").join("-").toLowerCase()}`}
-        className="bg-[#F0EEED] rounded-lg w-full min-w-[100px] max-w-[100px] sm:max-w-[124px] aspect-square overflow-hidden"
+        className="relative bg-[#F0EEED] rounded-lg w-full min-w-[100px] max-w-[100px] sm:max-w-[124px] aspect-square overflow-hidden"
       >
         <Image
           src={data.srcUrl}
-          width={124}
-          height={124}
-          className="rounded-md w-full h-full object-cover hover:scale-110 transition-all duration-500"
+          fill
+          sizes="(max-width: 640px) 100px, 124px"
+          className="rounded-md object-cover hover:scale-110 transition-all duration-500"
           alt={productName}
           priority
         />

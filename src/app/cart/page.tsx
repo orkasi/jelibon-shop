@@ -9,55 +9,17 @@ import { integralCF } from "@/styles/fonts";
 import { FaArrowRight } from "react-icons/fa6";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { TbBasketExclamation } from "react-icons/tb";
-import React, { FormEvent, useState } from "react";
+import React from "react";
 import { RootState } from "@/lib/store";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/redux";
+import { useAppSelector } from "@/lib/hooks/redux";
 import Link from "next/link";
 import { T, useLanguage } from "@/lib/language";
-import { clearCart } from "@/lib/features/carts/cartsSlice";
-
-type CheckoutForm = {
-  name: string;
-  email: string;
-  address: string;
-};
-
-const emptyCheckoutForm: CheckoutForm = {
-  name: "",
-  email: "",
-  address: "",
-};
 
 export default function CartPage() {
   const { cart, totalPrice, adjustedTotalPrice } = useAppSelector(
     (state: RootState) => state.carts
   );
   const { t } = useLanguage();
-  const dispatch = useAppDispatch();
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
-  const [form, setForm] = useState(emptyCheckoutForm);
-  const [errors, setErrors] = useState<Partial<CheckoutForm>>({});
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const nextErrors: Partial<CheckoutForm> = {};
-    if (!form.name.trim()) nextErrors.name = t("requiredField");
-    if (!form.email.trim()) nextErrors.email = t("requiredField");
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = t("invalidEmail");
-    }
-    if (!form.address.trim()) nextErrors.address = t("requiredField");
-
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
-
-    setIsOrderConfirmed(true);
-    setIsCheckoutOpen(false);
-    setForm(emptyCheckoutForm);
-    dispatch(clearCart());
-  };
 
   return (
     <main className="pb-20">
@@ -145,78 +107,25 @@ export default function CartPage() {
                   </Button>
                 </div>
                 <Button
-                  type="button"
+                  asChild
                   className="text-sm md:text-base font-medium bg-black rounded-full w-full py-4 h-[54px] md:h-[60px] group"
-                  onClick={() => setIsCheckoutOpen(true)}
                 >
-                  <T k="checkout" />{" "}
-                  <FaArrowRight className="text-xl ml-2 group-hover:translate-x-1 transition-all" />
+                  <Link href="/checkout">
+                    <T k="checkout" />{" "}
+                    <FaArrowRight className="text-xl ml-2 group-hover:translate-x-1 transition-all" />
+                  </Link>
                 </Button>
-                {isCheckoutOpen && (
-                  <form
-                    className="space-y-3 rounded-[20px] border border-black/10 p-4"
-                    onSubmit={handleSubmit}
-                  >
-                    <h6 className="text-base font-bold text-black">
-                      <T k="contactInformation" />
-                    </h6>
-                    {(
-                      [
-                        ["name", "fullName"],
-                        ["email", "email"],
-                        ["address", "address"],
-                      ] as const
-                    ).map(([field, label]) => (
-                      <label key={field} className="block text-sm font-medium text-black">
-                        {t(label)}
-                        <input
-                          type={field === "email" ? "email" : "text"}
-                          value={form[field]}
-                          onChange={(event) =>
-                            setForm((current) => ({
-                              ...current,
-                              [field]: event.target.value,
-                            }))
-                          }
-                          className="mt-1 h-11 w-full rounded-full bg-[#F0F0F0] px-4 text-sm outline-none focus:ring-2 focus:ring-black/20"
-                        />
-                        {errors[field] && (
-                          <span className="mt-1 block text-xs text-red-600">
-                            {errors[field]}
-                          </span>
-                        )}
-                      </label>
-                    ))}
-                    <Button
-                      type="submit"
-                      className="h-12 w-full rounded-full bg-[#ff3d8b] text-white hover:bg-black"
-                    >
-                      <T k="placeOrder" />
-                    </Button>
-                  </form>
-                )}
               </div>
             </div>
           </>
         ) : (
           <div className="flex items-center flex-col text-gray-300 mt-32">
-            {isOrderConfirmed ? (
-              <>
-                <span className="block mb-2 text-xl font-bold text-black">
-                  <T k="orderConfirmed" />
-                </span>
-                <span className="block mb-4 text-black/60">
-                  <T k="orderConfirmedBody" />
-                </span>
-              </>
-            ) : (
-              <>
-                <TbBasketExclamation strokeWidth={1} className="text-6xl" />
-                <span className="block mb-4">
-                  <T k="emptyCart" />
-                </span>
-              </>
-            )}
+            <>
+              <TbBasketExclamation strokeWidth={1} className="text-6xl" />
+              <span className="block mb-4">
+                <T k="emptyCart" />
+              </span>
+            </>
             <Button className="rounded-full w-24" asChild>
               <Link href="/shop">
                 <T k="shop" />

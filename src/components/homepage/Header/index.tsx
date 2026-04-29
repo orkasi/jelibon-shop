@@ -14,7 +14,7 @@ const Header = () => {
   const { t } = useLanguage();
 
   return (
-    <header className="bg-[linear-gradient(135deg,#fff2f8_0%,#f7f3ff_52%,#eefcff_100%)] pt-10 md:pt-24 overflow-hidden">
+    <header className="bg-[#F2F0F1] pt-10 md:pt-24 overflow-hidden">
       <div className="md:max-w-frame mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
         <section className="max-w-frame px-4">
           <motion.h2
@@ -46,7 +46,7 @@ const Header = () => {
           >
             <Link
               href="/shop"
-              className="w-full md:w-52 mb-5 md:mb-12 inline-block text-center bg-black hover:bg-[#ff3d8b] transition-all text-white px-14 py-4 rounded-full hover:animate-pulse"
+              className="w-full md:w-52 mb-5 md:mb-12 inline-block whitespace-nowrap text-center bg-black hover:bg-[#ff3d8b] transition-all text-white px-14 py-4 rounded-full hover:animate-pulse"
             >
               {t("shopNow")}
             </Link>
@@ -105,7 +105,7 @@ const Header = () => {
             height={104}
             width={104}
             alt="big star"
-            className="absolute right-7 xl:right-0 top-12 max-w-[76px] max-h-[76px] lg:max-w-24 lg:max-h-max-w-24 xl:max-w-[104px] xl:max-h-[104px] animate-[spin_4s_infinite]"
+            className="absolute right-7 xl:right-0 top-12 h-[76px] w-[76px] lg:h-24 lg:w-24 xl:h-[104px] xl:w-[104px] animate-[spin_4s_infinite]"
           />
           <Image
             priority
@@ -113,7 +113,7 @@ const Header = () => {
             height={56}
             width={56}
             alt="small star"
-            className="absolute left-7 md:left-0 top-36 sm:top-64 md:top-44 lg:top-56 max-w-11 max-h-11 md:max-w-14 md:max-h-14 animate-[spin_3s_infinite]"
+            className="absolute left-7 md:left-0 top-36 sm:top-64 md:top-44 lg:top-56 h-11 w-11 md:h-14 md:w-14 animate-[spin_3s_infinite]"
           />
         </motion.section>
       </div>

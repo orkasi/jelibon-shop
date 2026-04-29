@@ -20,14 +20,18 @@ const ProductCard = ({ data }: ProductCardProps) => {
       href={`/shop/product/${data.id}/${data.slug ?? data.title.split(" ").join("-")}`}
       className="group flex flex-col items-start aspect-auto"
     >
-      <div className="bg-[linear-gradient(135deg,#fff4f8_0%,#f4f0ff_55%,#eefcff_100%)] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden transition-all duration-300 group-hover:ring-2 group-hover:ring-[#ff3d8b]/35 group-hover:shadow-lg group-hover:shadow-[#ff3d8b]/10">
+      <div className="relative bg-[linear-gradient(135deg,#fff4f8_0%,#f4f0ff_55%,#eefcff_100%)] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:shadow-[#ff3d8b]/10">
         <Image
           src={data.srcUrl}
-          width={295}
-          height={298}
-          className="rounded-md w-full h-full object-contain hover:scale-110 transition-all duration-500"
+          fill
+          sizes="(max-width: 640px) 198px, 295px"
+          className="rounded-md object-contain hover:scale-110 transition-all duration-500"
           alt={title}
           priority
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[inherit] border-2 border-transparent transition-colors duration-300 group-hover:border-[#ff3d8b]/45"
         />
       </div>
       <strong className="text-black xl:text-xl">{title}</strong>

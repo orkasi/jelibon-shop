@@ -64,7 +64,7 @@ const TopNavbar = () => {
       id: 2,
       type: "MenuItem",
       label: t("onSale"),
-      url: "/shop?sale=1",
+      url: "/shop?sale=1&sort=low-price",
       children: [],
     },
     {
@@ -72,13 +72,6 @@ const TopNavbar = () => {
       type: "MenuItem",
       label: t("newArrivals"),
       url: "/shop?sort=newest",
-      children: [],
-    },
-    {
-      id: 4,
-      type: "MenuItem",
-      label: t("brands"),
-      url: "/shop#brands",
       children: [],
     },
   ];
@@ -142,21 +135,21 @@ const TopNavbar = () => {
             <Image
               priority
               src="/icons/search-black.svg"
-              height={100}
-              width={100}
+              height={22}
+              width={22}
               alt="search"
-              className="max-w-[22px] max-h-[22px]"
+              className="h-[22px] w-[22px]"
             />
           </Link>
           <CartBtn />
-          <Link href="/#signin" className="p-1">
+          <Link href="/account" className="p-1" aria-label={t("account")}>
             <Image
               priority
               src="/icons/user.svg"
-              height={100}
-              width={100}
+              height={22}
+              width={22}
               alt="user"
-              className="max-w-[22px] max-h-[22px]"
+              className="h-[22px] w-[22px]"
             />
           </Link>
         </div>

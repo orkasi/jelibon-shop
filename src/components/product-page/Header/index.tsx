@@ -16,6 +16,7 @@ const Header = ({ data }: { data: Product }) => {
   const { language, t } = useLanguage();
   const title = productTitle(language, data);
   const variants = useMemo(() => data.variants ?? [], [data.variants]);
+  const hasColorOptions = variants.length > 1;
   const [selectedColor, setSelectedColor] = useState(variants[0]?.color ?? "");
   const selectedVariant =
     variants.find((variant) => variant.color === selectedColor) ?? variants[0];
@@ -102,13 +103,17 @@ const Header = ({ data }: { data: Product }) => {
               ? data.descriptionTr
               : data.description ?? t("productDescription")}
           </p>
-          <hr className="h-[1px] border-t-black/10 mb-5" />
-          <ColorSelection
-            variants={variants}
-            selectedColor={selectedColor}
-            onSelect={setSelectedColor}
-          />
-          <hr className="h-[1px] border-t-black/10 my-5" />
+          {hasColorOptions && (
+            <>
+              <hr className="h-[1px] border-t-black/10 mb-5" />
+              <ColorSelection
+                variants={variants}
+                selectedColor={selectedColor}
+                onSelect={setSelectedColor}
+              />
+              <hr className="h-[1px] border-t-black/10 my-5" />
+            </>
+          )}
           <SizeSelection
             sizes={selectedVariant?.sizes ?? []}
             selectedSize={selectedSize}

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { CopyKey, useLanguage } from "@/lib/language";
 
-const footerLinksData: FooterLinks[] = [
+const buildFooterLinksData = (language: "en" | "tr"): FooterLinks[] => [
   {
     id: 1,
     title: "footerShop",
@@ -24,7 +24,7 @@ const footerLinksData: FooterLinks[] = [
       {
         id: 13,
         label: "onSale",
-        url: "/shop?sale=1",
+        url: "/shop?sale=1&sort=low-price",
       },
       {
         id: 14,
@@ -40,29 +40,31 @@ const footerLinksData: FooterLinks[] = [
       {
         id: 21,
         label: "customerSupport",
-        url: "/cart",
+        url: "/customer-support",
       },
       {
         id: 22,
         label: "deliveryDetails",
-        url: "/cart",
+        url: "/delivery-details",
       },
       {
         id: 23,
         label: "terms",
-        url: "/",
+        url:
+          language === "tr" ? "/kullanim-kosullari" : "/terms-and-conditions",
       },
       {
         id: 24,
         label: "privacy",
-        url: "/",
+        url: language === "tr" ? "/gizlilik-politikasi" : "/privacy-policy",
       },
     ],
   },
 ];
 
 const LinksSection = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const footerLinksData = buildFooterLinksData(language);
 
   return (
     <>

@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import React from "react";
 import { PaymentBadge, SocialNetworks } from "./footer.types";
-import { FaFacebookF, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import LinksSection from "./LinksSection";
 import Image from "next/image";
@@ -15,8 +16,8 @@ import { useLanguage } from "@/lib/language";
 const socialsData: SocialNetworks[] = [
   {
     id: 1,
-    icon: <FaTwitter />,
-    url: "https://twitter.com",
+    icon: <FaXTwitter />,
+    url: "https://x.com",
   },
   {
     id: 2,
@@ -27,11 +28,6 @@ const socialsData: SocialNetworks[] = [
     id: 3,
     icon: <FaInstagram />,
     url: "https://instagram.com",
-  },
-  {
-    id: 4,
-    icon: <FaGithub />,
-    url: "https://github.com/mohammadoftadeh",
   },
 ];
 
@@ -122,9 +118,9 @@ const Footer = () => {
                     priority
                     src={badge.srcUrl}
                     width={33}
-                    height={100}
-                    alt="user"
-                    className="max-h-[15px]"
+                    height={15}
+                    alt="payment method"
+                    className="h-[15px] w-auto"
                   />
                 </span>
               ))}

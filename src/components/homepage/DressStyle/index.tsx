@@ -34,12 +34,12 @@ const DressStyle = () => {
         >
           <DressStyleCard
             title={t("casual")}
-            url="/shop#casual"
+            url="/shop?style=casual"
             className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/dress-style-1.png')]"
           />
           <DressStyleCard
             title={t("formal")}
-            url="/shop#formal"
+            url="/shop?style=formal"
             className="md:max-w-[684px] h-[190px] bg-[url('/images/dress-style-2.png')]"
           />
         </motion.div>
@@ -52,12 +52,12 @@ const DressStyle = () => {
         >
           <DressStyleCard
             title={t("party")}
-            url="/shop#party"
+            url="/shop?style=party"
             className="md:max-w-[684px] h-[190px] bg-[url('/images/dress-style-3.png')]"
           />
           <DressStyleCard
             title={t("gym")}
-            url="/shop#gym"
+            url="/shop?style=gym"
             className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/dress-style-4.png')]"
           />
         </motion.div>

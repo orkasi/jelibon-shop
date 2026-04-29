@@ -14,10 +14,10 @@ const CartBtn = () => {
       <Image
         priority
         src="/icons/cart.svg"
-        height={100}
-        width={100}
+        height={22}
+        width={22}
         alt="cart"
-        className="max-w-[22px] max-h-[22px]"
+        className="h-[22px] w-[22px]"
       />
       {cart && cart.totalQuantities > 0 && (
         <span className="border bg-black text-white rounded-full w-fit-h-fit px-1 text-xs absolute -top-3 left-1/2 -translate-x-1/2">
