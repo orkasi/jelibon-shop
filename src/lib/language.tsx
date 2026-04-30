@@ -8,7 +8,7 @@ import {
   Language,
 } from "@/lib/language-constants";
 import {
-  getLocalizedPathname,
+  getLanguageSwitchResult,
   sanitizeLanguageForPath,
 } from "@/lib/language-routing";
 
@@ -355,8 +355,8 @@ export const LanguageProvider = ({
   }, [language]);
 
   const setLanguage = useCallback((nextLanguage: Language) => {
-    const sanitizedLanguage = sanitizeLanguageForPath(pathname, nextLanguage);
-    const localizedPath = getLocalizedPathname(pathname, sanitizedLanguage);
+    const { language: sanitizedLanguage, pathname: localizedPath } =
+      getLanguageSwitchResult(pathname, nextLanguage);
 
     setLanguageState(sanitizedLanguage);
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, sanitizedLanguage);

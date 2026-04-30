@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
+  getLanguageSwitchResult,
   getLocalizedPathname,
   isTurkishOnlyPath,
   resolveLanguageFromPath,
@@ -15,6 +16,17 @@ test("Turkish legal routes always resolve as Turkish", () => {
 
 test("Stored English is ignored on Turkish-only routes", () => {
   assert.equal(sanitizeLanguageForPath("/gizlilik-politikasi", "en"), "tr");
+});
+
+test("Explicit language switching on Turkish legal routes maps back to English", () => {
+  assert.deepEqual(getLanguageSwitchResult("/gizlilik-politikasi", "en"), {
+    language: "en",
+    pathname: "/privacy-policy",
+  });
+  assert.deepEqual(getLanguageSwitchResult("/kullanim-kosullari", "en"), {
+    language: "en",
+    pathname: "/terms-and-conditions",
+  });
 });
 
 test("Localized route switching maps paired legal pages", () => {

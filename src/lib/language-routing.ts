@@ -43,3 +43,18 @@ export const getLocalizedPathname = (
   const englishPath = englishRouteMap[pathname as keyof typeof englishRouteMap];
   return englishPath ?? pathname;
 };
+
+export const getLanguageSwitchResult = (
+  pathname: string,
+  nextLanguage: Language
+) => {
+  const localizedPathname = getLocalizedPathname(pathname, nextLanguage);
+
+  return {
+    pathname: localizedPathname,
+    language:
+      localizedPathname !== pathname
+        ? nextLanguage
+        : sanitizeLanguageForPath(pathname, nextLanguage),
+  };
+};
